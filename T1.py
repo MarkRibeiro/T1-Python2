@@ -7,7 +7,7 @@ dfSeries = pd.DataFrame(dfSeries)
 #print(dfSeries)
 
 #2)Substitua as notas inexistentes no rotten tomatoes pela nota do IMDB * 10
-dfSeries['Rotten Tomatoes (%)'].fillna(dfSeries['nota (imdb)']*10, inplace=True)
+dfSeries['Rotten Tomatoes'].fillna(dfSeries['IMDB']*10, inplace=True)
 #print(dfSeries)
 
 #2)Substitua as classificaçoes indicativas vazias por 10 anos
@@ -15,8 +15,8 @@ dfSeries['Classificação indicativa'].fillna(7, inplace=True)
 #print(dfSeries)
 
 #1)Calcule a media das notas das series, ou seja nota do (rotten tomatoes + nota do IMDB)/2
-imdb = dfSeries['nota (imdb)']
-rotten = dfSeries['Rotten Tomatoes (%)']
+imdb = dfSeries['IMDB']
+rotten = dfSeries['Rotten Tomatoes']
 colunas = [imdb*10, rotten]
 print(pd.concat(colunas, axis=1, sort=False).reindex(imdb.index))
 
