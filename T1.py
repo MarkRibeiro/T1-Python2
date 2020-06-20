@@ -7,13 +7,13 @@ dfSeries = pd.read_excel('series.xlsx',index_col=0 ,header=0)
 dfSeries = pd.DataFrame(dfSeries)
 #print(dfSeries)
 
-'''2i)Substitua as notas inexistentes no rotten tomatoes pela nota do IMDB * 10'''
+'''2.1)Substitua as notas inexistentes no rotten tomatoes pela nota do IMDB * 10'''
 print('\n')
 print('--------------- Notas do Rotten Tomatoes atualizadas -----------------')
 dfSeries['Rotten Tomatoes'].fillna(dfSeries['IMDB']*10, inplace=True)
 print(dfSeries)
 
-'''2ii)Substitua as classificaçoes indicativas vazias por 10 anos'''
+'''2.2)Substitua as classificaçoes indicativas vazias por 10 anos'''
 print('\n')
 print('--------------- Classificaçoes indicativas atualizadas -----------------')
 dfSeries['Classificação indicativa'].fillna(7, inplace=True)
@@ -54,7 +54,7 @@ dfSeries["Avaliação"]=pd.cut(dfSeries["NotaFinal"],bins=[0,50,70,80,90,100],la
 print(dfSeries)
 
 '''
-6i)Exibir a tabela de frequência de series por serviço de streaming
+6.1)Exibir a tabela de frequência de series por serviço de streaming
 '''
 print('\n')
 print('--------------- Tabela frequecia dos serviços de streaming-----------------')
@@ -62,16 +62,15 @@ print(dfSeries['Plataforma'].value_counts())
 
 
 '''
-6ii)Exibir a tabela de frequência de series com mais de 3 temporadas por serviço de streaming
+6.2)Exibir a tabela de frequência de series por numero de temporadas
 
 '''
 print('\n')
-print('------ Tabela frequecia de series com mais de 3 temporadas por serviço de streaming--------')
-d=dfSeries['Numero de temp']>2
-#print(d)
+print('------ Tabela frequecia de series por numero de temporadas--------')
+print(dfSeries['Numero de temp'].value_counts())
 
 '''
-7) Grafico em barras da quantidade de series para cada tipo de publico (coluna Classificação indicativa)
+7.1) Grafico em barras da quantidade de series para cada tipo de publico (coluna Classificação indicativa)
 
 '''
 print('\n')
@@ -80,7 +79,7 @@ dfSeries['Classificação indicativa'].value_counts().plot.barh(figsize=(8,8),ti
 plt.show()
 
 '''
-7) Grafico em pizza da quantidade de series para cada tipo de avaliação (coluna
+7.2) Grafico em pizza da quantidade de series para cada tipo de avaliação (coluna
 Avaliação)
     
 '''
@@ -88,3 +87,26 @@ print('\n')
 print('--------------- Grafico dos Avaliações -----------------')
 dfSeries['Avaliação'].value_counts().plot.pie(figsize=(8,8),title = 'Avaliações')
 plt.show()
+
+'''
+5.1) Quais series Netflix tem mais de 3 temporadas?
+    
+'''
+print('\n')
+print('--------------- series Netflix com mais de 3 temporadas -----------------')
+dfSeries.loc[dfSeries['Numero de temp'].isin([3, 5])]=20
+
+'''
+5.2) Quantas series classificadas como “Muito bom” a amazon prime tem?
+    
+'''
+print('\n')
+print('--------------- series Muito boas da amazon prime -----------------')
+
+'''
+5.3) Quantas series para Adolescentes a HBOGo tem?
+    
+'''
+print('\n')
+print('--------------- series Adolescentes da HBOGo -----------------')
+dfSeries[dfSeries['IMDB'], dfSeries['Rotten Tomatoes']]
