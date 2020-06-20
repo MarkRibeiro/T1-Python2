@@ -3,9 +3,10 @@ import matplotlib.pyplot as plt
 
 pd.set_option('display.max_columns', 7)
 pd.set_option('display.max_rows', 30)
-dfSeries = pd.read_excel('series.xlsx',index_col=0 ,header=0)
+dfSeries = pd.read_excel('series.xlsx', sheet_name='SeriesInfo', index_col=0 ,header=0)
 dfSeries = pd.DataFrame(dfSeries)
-#print(dfSeries)
+dfGeneros = pd.read_excel('series.xlsx', sheet_name='Generos', index_col=0 ,header=0)
+dfGeneros = pd.DataFrame(dfGeneros)
 
 '''2.1)Substitua as notas inexistentes no rotten tomatoes pela nota do IMDB * 10'''
 print('\n')
@@ -26,7 +27,6 @@ colunas = (dfSeries['IMDB']*10 + dfSeries['Rotten Tomatoes'])/2
 colunas.rename('NotaFinal', inplace = True)
 dfSeries=pd.concat([dfSeries,colunas], axis=1).reindex(dfSeries.index)
 print(dfSeries)
-#print(pd.concat(colunas, axis=1, sort=False).reindex(imdb.index))
 
 '''
 3)Substitua os valores da classificação indicativa para o seguinte:
@@ -94,19 +94,44 @@ plt.show()
 '''
 print('\n')
 print('--------------- series Netflix com mais de 3 temporadas -----------------')
-dfSeries.loc[dfSeries['Numero de temp'].isin([3, 5])]=20
-
+print(dfSeries[dfSeries['Numero de temp'] > 3].index.values)
 '''
 5.2) Quantas series classificadas como “Muito bom” a amazon prime tem?
     
 '''
 print('\n')
-print('--------------- series Muito boas da amazon prime -----------------')
+print('--------------- numero de series Muito boas da amazon prime -----------------')
+print(dfSeries[dfSeries['Avaliação'] == 'Muito bom']['Avaliação'].size)
 
 '''
 5.3) Quantas series para Adolescentes a HBOGo tem?
     
 '''
 print('\n')
-print('--------------- series Adolescentes da HBOGo -----------------')
-dfSeries[dfSeries['IMDB'], dfSeries['Rotten Tomatoes']]
+print('--------------- Series Adolescentes da Netflix -----------------')
+print(dfSeries[(dfSeries['Classificação indicativa'] == 'Adolescente') & (dfSeries['Plataforma'] == 'Netflix')].index.values)
+
+
+'''
+8.1) Maior nota do IMDB
+    
+'''
+print('\n')
+print('--------------- Serie com maior nota do IMDB -----------------')
+print(dfSeries['IMDB'].idxmax())
+
+'''
+8.2) Série com maior número de temporadas da HBOGo
+    
+'''
+print('\n')
+print('---------------  Série com maior número de temporadas da HBOGo -----------------')
+print(dfSeries.groupby(['Plataforma']).idxmax()['Numero de temp']['HBOGo'])
+
+'''
+8.3) Menor nota para cada plataforma
+    
+'''
+print('\n')
+print('--------------- Menor nota para cada plataforma -----------------')
+print(dfSeries.groupby(['Plataforma']).min()['NotaFinal'])
